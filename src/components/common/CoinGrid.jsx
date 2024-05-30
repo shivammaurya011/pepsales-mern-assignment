@@ -6,7 +6,7 @@ const CoinGrid = ({ data }) => {
   return (
     <div className="flex flex-wrap justify-center gap-8">
       {data.map((coin) => (
-        <Link to={`/discription/:${coin.id}`} key={coin.id} className="p-4 w-80 flex flex-col gap-4 rounded-lg bg-gray-100">
+        <Link to={`/details/${coin.id}`} key={coin.id} className="p-4 w-80 flex flex-col gap-4 rounded-lg bg-gray-100">
           <div className="flex justify-between items-center">
               <img src={coin.image} alt={`${coin.name} logo`} className="w-12 h-12" />
               <p className="text-lg text-gray-500">{coin.name}</p>

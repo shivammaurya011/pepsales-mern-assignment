@@ -30,7 +30,7 @@ function Dashboard() {
     <Layout>
       <div className="p-4">
         {loading ? (
-          <p>Loading...</p>
+          <p className='h-screen flex justify-center items-center text-green-500 text-xl'>Loading...</p>
         ) : (
           <>
             <div className='px-8'>

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import { coinApi } from '../utils/getData';
-import { getDate } from '../utils/getDate';
 import LineChart from '../components/common/LineChart';
 import Layout from '../layouts/Layout';
+import { BsGraphDownArrow, BsGraphUpArrow } from 'react-icons/bs';
+import Loading from '../components/common/Loading';
 
 const Details = () => {
   const { id } = useParams();
@@ -18,27 +18,30 @@ const Details = () => {
   });
 
   useEffect(() => {
-    if (id) {
-      getData();
-    }
-  }, [id]);
+    const getData = async () => {
+      setLoading(true);
+      try {
+        const dataResponse = await getCoinData(id);
+        if (dataResponse) {
+          setCoinData(dataResponse);
+        }
+        const pricesResponse = await getCoinPrices(id, days, priceType);
+        if (pricesResponse) {
+          setChartDataFunction(pricesResponse);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const getData = async () => {
-    const data = await getCoinData(id);
-    const prices = await getCoinPrices(id, days, priceType);
-
-    if (data) {
-      setCoinData(data);
-      setLoading(false);
-    }
-    if (prices) {
-      setChartDataFunction(prices);
-    }
-  };
+    getData();
+  }, [id, days, priceType]);
 
   const getCoinData = async (id) => {
     try {
-      const response = await axios.get(`${coinApi}/coins/${id}`);
+      const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching coin data:", error);
@@ -48,15 +51,13 @@ const Details = () => {
 
   const getCoinPrices = async (id, days, priceType) => {
     try {
-      const response = await axios.get(
-        `${coinApi}/coins/${id}/market_chart`, {
-          params: {
-            vs_currency: 'usd',
-            days: days,
-            interval: 'daily',
-          }
+      const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart`, {
+        params: {
+          vs_currency: 'usd',
+          days: days,
+          interval: 'daily',
         }
-      );
+      });
       if (priceType === 'prices') return response.data.prices;
       if (priceType === 'market_caps') return response.data.market_caps;
       if (priceType === 'total_volumes') return response.data.total_volumes;
@@ -69,7 +70,7 @@ const Details = () => {
 
   const setChartDataFunction = (prices) => {
     setChartData({
-      labels: prices.map((data) => getDate(data[0])),
+      labels: prices.map((data) => new Date(data[0]).toLocaleDateString()),
       datasets: [
         {
           label: "Crypto",
@@ -99,37 +100,57 @@ const Details = () => {
     });
   };
 
-  const handleDaysChange = async (event) => {
+  const handleDaysChange = (event) => {
     const newDays = event.target.value;
     setDays(newDays);
-    const prices = await getCoinPrices(id, newDays, priceType);
-    if (prices) {
-      setChartDataFunction(prices);
-    }
   };
 
-  const handlePriceChange = async (event) => {
+  const handlePriceChange = (event) => {
     const newPriceType = event.target.value;
     setPriceType(newPriceType);
-    const prices = await getCoinPrices(id, days, newPriceType);
-    if (prices) {
-      setChartDataFunction(prices);
-    }
   };
 
   return (
     <Layout>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen p-12 flex flex-col">
         {loading ? (
-          <p className='h-screen flex justify-center items-center text-green-500 text-xl'>Loading...</p>
-        ) : (
-          <div className="flex-grow">
-            <div className="bg-gray-100 p-4">
-              <h1 className="text-2xl font-bold">{coin.name}</h1>
-              <p className="text-gray-600">{coin.desc}</p>
-              <div className="mt-4 flex space-x-4">
-                <label className="block">
-                  <span className="text-gray-700">Days:</span>
+          <Loading/>
+          ) : (
+          <div className='flex flex-col gap-4'>
+          <div className="p-4 flex justify-between rounded-lg bg-gray-100 shadow-md hover:shadow-lg transition-shadow">
+          <img src={coin.image} alt={`${coin.name} logo`} className="w-12 h-12" />
+          <p className="text-lg font-semibold">{coin.name}</p>
+          <p className="text-sm text-gray-500">{coin.symbol.toUpperCase()}</p>
+          {coin.price_change_percentage_24h > 0 ? (
+            <>
+              <BsGraphUpArrow className="text-green-500 text-2xl" />
+              <p className="text-green-500 text-xl ml-2">{coin.price_change_percentage_24h.toFixed(2)}%</p>
+            </>
+          ) : (
+            <>
+              <BsGraphDownArrow className="text-red-500 text-2xl" />
+              <p className="text-red-500 text-xl ml-2">{coin.price_change_percentage_24h.toFixed(2)}%</p>
+            </>
+          )}
+          <p className={`text-xl font-bold ${coin.price_change_percentage_24h < 0 ? "text-red-500" : "text-green-500"}`}>
+            $ {coin.current_price.toLocaleString()}
+          </p>
+          <div className="text-right">
+            <p className="text-sm">
+              <strong>Total Volume:</strong> $ {coin.total_volume.toLocaleString()}
+            </p>
+            <p className="text-sm mt-1">
+              <strong>Market Cap:</strong> $ {coin.market_cap.toLocaleString()}
+            </p>
+          </div>
+        </div>
+          <div>
+            
+          </div>
+            <div className="bg-gray-100 rounded-lg p-4 flex justify-around items-center">
+            <h1 className="text-2xl font-bold">{coin.name}</h1>
+                <label className="flex ga=-4">
+                  <span className="text-gray-700">Days: </span>
                   <select
                     value={days}
                     onChange={handleDaysChange}
@@ -141,7 +162,7 @@ const Details = () => {
                     <option value="120">120</option>
                   </select>
                 </label>
-                <label className="block">
+                <label className="flex">
                   <span className="text-gray-700">Price Type:</span>
                   <select
                     value={priceType}
@@ -153,10 +174,12 @@ const Details = () => {
                     <option value="total_volumes">Total Volumes</option>
                   </select>
                 </label>
-              </div>
             </div>
-            <div className="bg-gray-200 p-4 mt-4">
+            <div className="bg-gray-100 rounded-lg p-12">
               <LineChart chartData={chartData} priceType={priceType} />
+            </div>
+            <div className='p-12 bg-gray-100 rounded-lg'>
+              <p className="text-gray-600">{coin.desc}</p> 
             </div>
           </div>
         )}

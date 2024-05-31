@@ -1,22 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  data: [],
-  loading: false,
-  error: null,
-};
-
-export const counterSlice = createSlice({
+const coinSlice = createSlice({
   name: 'coin',
-  initialState,
+  initialState: {
+    data: [],
+    loading: false,
+    error: null,
+  },
   reducers: {
     start: (state) => {
       state.loading = true;
-      state.error = null;
     },
     success: (state, action) => {
-      state.data = action.payload;
       state.loading = false;
+      state.data = [...state.data, ...action.payload];
     },
     failure: (state, action) => {
       state.loading = false;
@@ -25,6 +22,6 @@ export const counterSlice = createSlice({
   },
 });
 
-export const { start, success, failure } = counterSlice.actions;
+export const { start, success, failure } = coinSlice.actions;
 
-export default counterSlice.reducer;
+export default coinSlice.reducer;

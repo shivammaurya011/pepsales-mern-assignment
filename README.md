@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+# LiveTrade.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+LiveTrade. is a responsive web application that allows users to view and analyze cryptocurrency data. The app provides a search functionality, grid and list views, and various filtering options.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Search Functionality:** Easily search for specific cryptocurrencies.
+- **Grid and List Views:** Switch between grid and list views for a different layout experience.
+- **Filtering Options:** Filter data by days and price type.
+- **Responsive Design:** Optimized for both desktop and mobile devices.
 
-### `npm start`
+## Screenshots
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![image](https://github.com/shivammaurya011/pepsales-mern-assignment/assets/71092987/918effc2-84e4-411f-84fd-e90fffed5c10)
+![image](https://github.com/shivammaurya011/pepsales-mern-assignment/assets/71092987/34b1125c-50e2-40a9-8b68-965c324e63ea)
+![image](https://github.com/shivammaurya011/pepsales-mern-assignment/assets/71092987/2e15790b-eba5-47f3-aecb-c8701e9957a4)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Follow these steps to set up the project locally:
 
-### `npm run build`
+1. **Clone the repository:**
+    ```bash
+    git clone https://github.com/yourusername/coin-dashboard.git
+    ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. **Navigate to the project directory:**
+    ```bash
+    cd coin-dashboard
+    ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. **Start the development server:**
+    ```bash
+    npm start
+    ```
 
-### `npm run eject`
+    The application will be running at `http://localhost:3000`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Usage
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. **Search for cryptocurrencies:**
+   - Use the search bar at the top to find specific coins by name or symbol.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. **Toggle between views:**
+   - Use the "Grid" and "List" tabs to switch between different layout views.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3. **Filter data:**
+   - Use the dropdown menus to filter by days and price type.
 
-## Learn More
+## Components
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **Dashboard:** The main component that renders the search bar, tabs for grid and list views, and the corresponding view component.
+- **CoinGrid:** Displays cryptocurrencies in a grid layout.
+- **CoinList:** Displays cryptocurrencies in a list layout.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Code Overview
 
-### Code Splitting
+### `Dashboard.js`
+The main container component that manages state and handles data fetching and filtering.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### `CoinGrid.js`
+Renders the cryptocurrency data in a grid format.
 
-### Analyzing the Bundle Size
+### `CoinList.js`
+Renders the cryptocurrency data in a list format.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### `redux/coinSlice.js`
+Contains Redux logic for managing coin data state.
 
-### Making a Progressive Web App
+### `utils/getData.js`
+Utility function for fetching cryptocurrency data from the API.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Contributing
 
-### Advanced Configuration
+Contributions are welcome! Follow these steps to contribute:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. **Fork the repository.**
+2. **Create a new branch:**
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+3. **Make your changes.**
+4. **Commit your changes:**
+    ```bash
+    git commit -m 'Add some feature'
+    ```
+5. **Push to the branch:**
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+6. **Create a pull request.**
 
-### Deployment
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+This project is licensed under the MIT License.
 
-### `npm run build` fails to minify
+## Contact
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For any questions or feedback, please contact [shivammaurya011@gmail.com](mailto:shivammaurya011@gmail.com).
+
+---
+
+**Happy Coding!**

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../layouts/Layout';
-import { getData } from '../utils/getData';
 import CoinGrid from '../components/common/CoinGrid';
 import CoinList from '../components/common/CoinList';
+import { useSelector, useDispatch } from 'react-redux';
+import { start, success, failure } from '../redux/coine/coineSlice';
+import { getData } from '../utils/getData';
 
 function Dashboard() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { data, loading, error } = useSelector((state) => state.coin);
   const [tab, setTab] = useState('grid');
 
   useEffect(() => {
@@ -14,10 +16,16 @@ function Dashboard() {
   }, []);
 
   const getCoinData = async () => {
-    const response = await getData();
-    if (response) {
-      setData(response);
-      setLoading(false);
+    dispatch(start());
+    try {
+      const response = await getData();
+      if (response) {
+        dispatch(success(response));
+      } else {
+        dispatch(failure('No data found'));
+      }
+    } catch (error) {
+      dispatch(failure(error.message));
     }
   };
 
@@ -29,10 +37,6 @@ function Dashboard() {
   return (
     <Layout>
       <div className="p-4">
-        {loading ? (
-          <p className='h-screen flex justify-center items-center text-green-500 text-xl'>Loading...</p>
-        ) : (
-          <>
             <div className='px-8'>
               <input
                 className="w-full py-2 px-6 bg-slate-100 rounded-full"
@@ -59,15 +63,13 @@ function Dashboard() {
               </div>
               <div>
                 {tab === 'grid' ? (
-                  <CoinGrid data={data} />
+                  <CoinGrid data={data} loading={loading} />
                 ) : (
-                  <CoinList data={data} />
+                  <CoinList data={data} loading={loading}/>
                 )}
               </div>
             </div>
-          </>
-        )}
-      </div>
+            </div>
     </Layout>
   );
 }

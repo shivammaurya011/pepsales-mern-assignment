@@ -96,10 +96,6 @@ Contributions are welcome! Follow these steps to contribute:
     ```
 6. **Create a pull request.**
 
-## License
-
-This project is licensed under the MIT License.
-
 ## Contact
 
 For any questions or feedback, please contact [shivammaurya011@gmail.com](mailto:shivammaurya011@gmail.com).

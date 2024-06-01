@@ -1,46 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BsGraphDownArrow, BsGraphUpArrow } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { start, success, failure } from '../../redux/coine/coineSlice';
-import { getData } from '../../utils/getData';
-import useLazyLoading from '../../hooks/useLazyLoading';
 import Loading from './Loading';
 
 const CoinGrid = ({ data, loading }) => {
-  const dispatch = useDispatch();
-  const [page, setPage] = useState(1);
-
-  const fetchMoreData = async () => {
-    dispatch(start());
-    try {
-      const nextPage = page + 1;
-      const response = await getData(nextPage);
-      if (response) {
-        dispatch(success(response));
-        setPage(nextPage);
-      } else {
-        dispatch(failure('No more data available'));
-      }
-    } catch (error) {
-      dispatch(failure(error.message));
-    }
-  };
-
-  const lastElementRef = useLazyLoading(fetchMoreData);
-
   if (loading) {
     return <Loading />;
   }
 
   return (
     <div className="flex flex-wrap justify-center gap-8 p-4">
-      {data.map((coin, index) => (
+      {data.map((coin) => (
         <Link
           to={`/details/${coin.id}`}
           key={coin.id}
           className="p-4 w-80 flex flex-col gap-4 rounded-lg bg-gray-100 shadow-md hover:shadow-lg transition-shadow"
-          ref={index === data.length - 1 ? lastElementRef : null}
         >
           <div className="flex justify-between items-center">
             <img src={coin.image} alt={`${coin.name} logo`} className="w-12 h-12" />

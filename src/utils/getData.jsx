@@ -1,5 +1,5 @@
-export const getData = async (page = 1) => {
-  const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=${page}&sparkline=false`;
+export const getData = async () => {
+  const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd`;
 
   try {
     const response = await fetch(url, {

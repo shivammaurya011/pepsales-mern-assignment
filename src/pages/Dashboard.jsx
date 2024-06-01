@@ -11,17 +11,16 @@ function Dashboard() {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.coin);
   const [tab, setTab] = useState('grid');
-  const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchCoinData();
-  }, [page]);
+  }, []);
 
   const fetchCoinData = async () => {
     dispatch(start());
     try {
-      const response = await getData(page);
+      const response = await getData();
       if (response) {
         dispatch(success(response));
       } else {
